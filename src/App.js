@@ -1,30 +1,40 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Landing from './pages/Landing';
-import Register from './pages/Register';
-import Login from './pages/Login';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import Layout        from './components/Layout';
+import Landing       from './pages/Landing';
+import SupportForm   from './components/SupportForm';
+import Login         from './pages/Login';
+import Register      from './pages/Register';
 import DashboardHome from './pages/dashboard/DashboardHome';
-import Layout from './components/Layout';
+import SupportAdmin  from './pages/support/SupportAdmin';
+import TicketDetail  from './pages/support/TicketDetail';
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        {/* 🔥 Test‐only route (bypasses dashboard nesting) */}
+        <Route path="/test-support" element={<SupportAdmin />} />
 
-        {/* Protected layout route */}
-        <Route
-          path="/dashboard/*"
-          element={
-            <Layout>
-              <DashboardHome />
-            </Layout>
-          }
-        />
+        {/* Public pages */}
+        <Route path="/"         element={<Landing />} />
+        <Route path="/support"  element={<SupportForm />} />
+        <Route path="/login"    element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* Dashboard (all nested under /dashboard) */}
+        <Route path="/dashboard" element={<Layout />}>
+          <Route index           element={<DashboardHome />} />
+          <Route path="support"  element={<SupportAdmin />} />
+          <Route path="support/:id" element={<TicketDetail />} />
+          {/* …add more dashboard routes here */}
+        </Route>
+
+        {/* 404 fallback */}
+        <Route path="*" element={<div className="p-6">Page not found</div>} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 

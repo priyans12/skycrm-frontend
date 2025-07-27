@@ -1,14 +1,18 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
+import Sidebar from './Sidebar';
+import Header  from './Header';
 
-const Layout = ({ children }) => {
-  return (
-    <div className="layout-wrapper">
-      {/* Example layout structure */}
-      <header className="bg-gray-800 text-white p-4 text-center">SkyCRM</header>
-      <main className="p-6">{children}</main>
-      <footer className="bg-gray-200 text-center p-2 mt-6">© 2025 SkyCRM</footer>
+const Layout = () => (
+  <div className="flex">
+    <Sidebar />
+    <div className="flex-1 ml-64">
+      <Header />
+      <main className="mt-16 p-6 bg-gray-100 min-h-screen">
+        <Outlet />
+      </main>
     </div>
-  );
-};
+  </div>
+);
 
 export default Layout;
